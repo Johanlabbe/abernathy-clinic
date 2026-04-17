@@ -1,11 +1,11 @@
-package com.abernathy.gateway;
+package com.abernathy.patient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GatewayApplication {
+public class PatientApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GatewayApplication.class, args);
+        SpringApplication.run(PatientApplication.class, args);
     }
 }
