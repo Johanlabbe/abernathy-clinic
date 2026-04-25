@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un Patient</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        form { max-width: 400px; display: flex; flex-direction: column; gap: 10px; }
+        label { font-weight: bold; margin-top: 10px; }
+        input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; margin-top: 20px; }
+        button:hover { background-color: #0056b3; }
+       .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Nouveau Patient</h1>
+    
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+    
+    <form th:action="@{/patient/add}" th:object="${patient}" method="post">
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" th:field="*{prenom}" required>
+
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" th:field="*{nom}" required>
+
+        <label for="dateNaissance">Date de naissance (YYYY-MM-DD) :</label>
+        <input type="date" id="dateNaissance" th:field="*{dateNaissance}" required>
+
+        <label for="genre">Genre :</label>
+        <select id="genre" th:field="*{genre}" required>
+            <option value="M">Homme (M)</option>
+            <option value="F">Femme (F)</option>
+        </select>
+
+        <label for="adresse">Adresse :</label>
+        <input type="text" id="adresse" th:field="*{adresse}">
+
+        <label for="telephone">Téléphone :</label>
+        <input type="text" id="telephone" th:field="*{telephone}">
+
+        <button type="submit">Ajouter le patient</button>
+    </form>
+    
+    <br>
+    <a th:href="@{/patients}">Retour à la liste</a>
+</body>
+</html>

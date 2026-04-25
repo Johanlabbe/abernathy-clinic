@@ -5,6 +5,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestClient;
 
 import java.util.Base64;
@@ -37,5 +39,28 @@ public class FrontController {
             model.addAttribute("error", "Impossible de récupérer les patients : " + e.getMessage());
         }
         return "patients";
+    }
+
+    @GetMapping("/patient/add")
+    public String showAddForm(Model model) {
+        // On envoie un objet vide à la vue pour initialiser le formulaire
+        model.addAttribute("patient", new PatientBean(null, "", "", null, "F", "", ""));
+        return "add-patient";
+    }
+
+    @PostMapping("/patient/add")
+    public String submitAddForm(@ModelAttribute PatientBean patient, Model model) {
+        try {
+            restClient.post()
+                   .uri("/patient/add")
+                   .body(patient)
+                   .retrieve()
+                   .toBodilessEntity();
+            
+            return "redirect:/patients";
+        } catch (Exception e) {
+            model.addAttribute("error", "Erreur lors de l'ajout : " + e.getMessage());
+            return "add-patient";
+        }
     }
 }
