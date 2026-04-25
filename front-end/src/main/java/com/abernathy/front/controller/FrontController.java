@@ -1,11 +1,13 @@
 package com.abernathy.front.controller;
 
+import com.abernathy.front.beans.NoteBean;
 import com.abernathy.front.beans.PatientBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestClient;
 
@@ -43,7 +45,6 @@ public class FrontController {
 
     @GetMapping("/patient/add")
     public String showAddForm(Model model) {
-        // On envoie un objet vide à la vue pour initialiser le formulaire
         model.addAttribute("patient", new PatientBean(null, "", "", null, "F", "", ""));
         return "add-patient";
     }
@@ -62,5 +63,42 @@ public class FrontController {
             model.addAttribute("error", "Erreur lors de l'ajout : " + e.getMessage());
             return "add-patient";
         }
+    }
+
+    @GetMapping("/patient/details/{id}")
+    public String showPatientDetails(@PathVariable Long id, Model model) {
+        try {
+            PatientBean patient = restClient.get()
+                  .uri("/patient/" + id)
+                  .retrieve()
+                  .body(PatientBean.class);
+
+            List<NoteBean> notes = restClient.get()
+                  .uri("/note/patient/" + id)
+                  .retrieve()
+                  .body(new ParameterizedTypeReference<List<NoteBean>>() {});
+
+            model.addAttribute("patient", patient);
+            model.addAttribute("notes", notes);
+            model.addAttribute("newNote", new NoteBean(null, id, patient.nom(), ""));
+            
+        } catch (Exception e) {
+            model.addAttribute("error", "Erreur lors de la récupération des détails : " + e.getMessage());
+        }
+        return "patient-details";
+    }
+
+    @PostMapping("/note/add")
+    public String submitAddNote(@ModelAttribute NoteBean newNote) {
+        try {
+            restClient.post()
+                  .uri("/note/add")
+                  .body(newNote)
+                  .retrieve()
+                  .toBodilessEntity();
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'ajout de la note : " + e.getMessage());
+        }
+        return "redirect:/patient/details/" + newNote.patId();
     }
 }

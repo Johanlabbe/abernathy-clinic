@@ -1,23 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Abernathy Clinic - Patients</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-       .error { color: red; font-weight: bold; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <h1>Liste des Patients - Abernathy Clinic</h1>
-    
-    <a th:href="@{/patient/add}" style="display: inline-block; margin-bottom: 20px; padding: 10px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px;">+ Ajouter un Patient</a>
-    
+
+    <a th:href="@{/patient/add}"
+        style="display: inline-block; margin-bottom: 20px; padding: 10px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px;">+
+        Ajouter un Patient</a>
+
     <p class="error" th:if="${error}" th:text="${error}"></p>
-    
+
     <table th:if="${patients}">
         <thead>
             <tr>
@@ -28,6 +52,7 @@
                 <th>Genre</th>
                 <th>Adresse</th>
                 <th>Téléphone</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -39,8 +64,12 @@
                 <td th:text="${patient.genre}"></td>
                 <td th:text="${patient.adresse}"></td>
                 <td th:text="${patient.telephone}"></td>
+                <td>
+                    <a th:href="@{/patient/details/{id}(id=${patient.id})}" style="color: #007bff; text-decoration: underline;">Détails</a>
+                </td>
             </tr>
         </tbody>
     </table>
 </body>
+
 </html>

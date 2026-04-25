@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dossier Patient</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+       .patient-card,.notes-section,.add-note-section { border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 5px; }
+       .note-item { background-color: #f9f9f9; padding: 10px; margin-bottom: 10px; border-left: 4px solid #007bff; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; padding: 5px; }
+        button { padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+       .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Dossier Médical</h1>
+    <a th:href="@{/patients}">← Retour à la liste</a>
+    
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <div class="patient-card" th:if="${patient}">
+        <h2 th:text="${patient.prenom} + ' ' + ${patient.nom}"></h2>
+        <p><strong>ID :</strong> <span th:text="${patient.id}"></span></p>
+        <p><strong>Date de naissance :</strong> <span th:text="${patient.dateNaissance}"></span></p>
+        <p><strong>Genre :</strong> <span th:text="${patient.genre}"></span></p>
+    </div>
+
+    <div class="notes-section" th:if="${patient}">
+        <h3>Historique des observations</h3>
+        <p th:if="${#lists.isEmpty(notes)}">Aucune note pour ce patient.</p>
+        
+        <div th:each="noteObj : ${notes}" class="note-item">
+            <p th:text="${noteObj.note}"></p>
+        </div>
+    </div>
+
+    <div class="add-note-section" th:if="${patient}">
+        <h3>Ajouter une note</h3>
+        <form th:action="@{/note/add}" th:object="${newNote}" method="post">
+            <input type="hidden" th:field="*{patId}">
+            <input type="hidden" th:field="*{patient}">
+            
+            <textarea th:field="*{note}" placeholder="Saisissez les observations du praticien ici..." required></textarea>
+            <br>
+            <button type="submit">Enregistrer la note</button>
+        </form>
+    </div>
+</body>
+</html>
