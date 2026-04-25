@@ -12,6 +12,7 @@
         <module>gateway-service</module>
         <module>patient-service</module>
         <module>front-end</module>
+        <module>note-service</module>
     </modules>
 
     <properties>

@@ -1,0 +1,9 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: note-service
+  data:
+    mongodb:
+      uri: mongodb://root:password@localhost:27017/abernathy_note?authSource=admin
