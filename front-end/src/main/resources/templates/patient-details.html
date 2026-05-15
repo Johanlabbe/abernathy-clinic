@@ -5,11 +5,16 @@
     <title>Dossier Patient</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
-       .patient-card,.notes-section,.add-note-section { border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 5px; }
+       .patient-card,.notes-section,.add-note-section,.assessment-section { border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 5px; }
        .note-item { background-color: #f9f9f9; padding: 10px; margin-bottom: 10px; border-left: 4px solid #007bff; }
         textarea { width: 100%; height: 100px; margin-bottom: 10px; padding: 5px; }
         button { padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
        .error { color: red; font-weight: bold; }
+       .risk-badge { display: inline-block; padding: 6px 14px; border-radius: 4px; font-weight: bold; font-size: 1.1em; }
+       .risk-None { background-color: #28a745; color: white; }
+       .risk-Borderline { background-color: #ffc107; color: black; }
+       .risk-InDanger { background-color: #fd7e14; color: white; }
+       .risk-EarlyOnset { background-color: #dc3545; color: white; }
     </style>
 </head>
 <body>
@@ -23,6 +28,11 @@
         <p><strong>ID :</strong> <span th:text="${patient.id}"></span></p>
         <p><strong>Date de naissance :</strong> <span th:text="${patient.dateNaissance}"></span></p>
         <p><strong>Genre :</strong> <span th:text="${patient.genre}"></span></p>
+    </div>
+
+    <div class="assessment-section" th:if="${assessment}">
+        <h3>Évaluation du risque de diabète</h3>
+        <span class="risk-badge" th:classappend="'risk-' + ${assessment}" th:text="${assessment}"></span>
     </div>
 
     <div class="notes-section" th:if="${patient}">

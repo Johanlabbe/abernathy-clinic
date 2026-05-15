@@ -78,10 +78,16 @@ public class FrontController {
                   .retrieve()
                   .body(new ParameterizedTypeReference<List<NoteBean>>() {});
 
+            String assessment = restClient.get()
+                  .uri("/assessment/" + id)
+                  .retrieve()
+                  .body(String.class);
+
             model.addAttribute("patient", patient);
             model.addAttribute("notes", notes);
+            model.addAttribute("assessment", assessment);
             model.addAttribute("newNote", new NoteBean(null, id, patient.nom(), ""));
-            
+
         } catch (Exception e) {
             model.addAttribute("error", "Erreur lors de la récupération des détails : " + e.getMessage());
         }

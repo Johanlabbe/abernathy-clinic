@@ -1,0 +1,9 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: assessment-service
+
+services:
+  gateway-url: http://localhost:8080

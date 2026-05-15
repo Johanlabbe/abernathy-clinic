@@ -13,6 +13,7 @@
         <module>patient-service</module>
         <module>front-end</module>
         <module>note-service</module>
+        <module>assessment-service</module>
     </modules>
 
     <properties>
