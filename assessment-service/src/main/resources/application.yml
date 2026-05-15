@@ -6,4 +6,4 @@ spring:
     name: assessment-service
 
 services:
-  gateway-url: http://localhost:8080
+  gateway-url: http://${GATEWAY_HOST:localhost}:${GATEWAY_PORT:8080}

@@ -5,9 +5,9 @@ spring:
   application:
     name: patient-service
   datasource:
-    url: jdbc:mysql://localhost:3306/abernathy_patient?createDatabaseIfNotExist=true&serverTimezone=UTC
-    username: root
-    password: password
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:abernathy_patient}?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:password}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:

@@ -4,3 +4,6 @@ server:
 spring:
   application:
     name: front-end
+
+services:
+  gateway-url: http://${GATEWAY_HOST:localhost}:${GATEWAY_PORT:8080}

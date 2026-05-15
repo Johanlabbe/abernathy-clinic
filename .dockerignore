@@ -1,0 +1,9 @@
+**/target/
+**/.idea/
+**/.vscode/
+**/.git/
+**/.github/
+**/*.iml
+**/node_modules/
+**/.DS_Store
+**/Thumbs.db

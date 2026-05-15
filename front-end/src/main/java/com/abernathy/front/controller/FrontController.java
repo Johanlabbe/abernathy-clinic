@@ -2,6 +2,7 @@ package com.abernathy.front.controller;
 
 import com.abernathy.front.beans.NoteBean;
 import com.abernathy.front.beans.PatientBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +20,11 @@ public class FrontController {
 
     private final RestClient restClient;
 
-    public FrontController() {
+    public FrontController(@Value("${services.gateway-url}") String gatewayUrl) {
         String encodedCredentials = Base64.getEncoder().encodeToString("medecin:password123".getBytes());
 
         this.restClient = RestClient.builder()
-               .baseUrl("http://localhost:8080")
+               .baseUrl(gatewayUrl)
                .defaultHeader("Authorization", "Basic " + encodedCredentials)
                .build();
     }

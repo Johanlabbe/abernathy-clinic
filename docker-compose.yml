@@ -1,0 +1,132 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: abernathy-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: abernathy_patient
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - abernathy-net
+
+  mongo:
+    image: mongo:7
+    container_name: abernathy-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - abernathy-net
+
+  patient-service:
+    build:
+      context: .
+      dockerfile: patient-service/Dockerfile
+    container_name: abernathy-patient
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: abernathy_patient
+      DB_USER: root
+      DB_PASSWORD: password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - abernathy-net
+
+  note-service:
+    build:
+      context: .
+      dockerfile: note-service/Dockerfile
+    container_name: abernathy-note
+    restart: unless-stopped
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_USER: root
+      MONGO_PASSWORD: password
+      MONGO_DB: abernathy_note
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - abernathy-net
+
+  gateway-service:
+    build:
+      context: .
+      dockerfile: gateway-service/Dockerfile
+    container_name: abernathy-gateway
+    restart: unless-stopped
+    environment:
+      PATIENT_HOST: patient-service
+      PATIENT_PORT: 8081
+      NOTE_HOST: note-service
+      NOTE_PORT: 8083
+      ASSESSMENT_HOST: assessment-service
+      ASSESSMENT_PORT: 8084
+    ports:
+      - "8080:8080"
+    depends_on:
+      - patient-service
+      - note-service
+      - assessment-service
+    networks:
+      - abernathy-net
+
+  assessment-service:
+    build:
+      context: .
+      dockerfile: assessment-service/Dockerfile
+    container_name: abernathy-assessment
+    restart: unless-stopped
+    environment:
+      GATEWAY_HOST: gateway-service
+      GATEWAY_PORT: 8080
+    networks:
+      - abernathy-net
+
+  front-end:
+    build:
+      context: .
+      dockerfile: front-end/Dockerfile
+    container_name: abernathy-front
+    restart: unless-stopped
+    environment:
+      GATEWAY_HOST: gateway-service
+      GATEWAY_PORT: 8080
+    ports:
+      - "8082:8082"
+    depends_on:
+      - gateway-service
+    networks:
+      - abernathy-net
+
+volumes:
+  mysql-data:
+  mongo-data:
+
+networks:
+  abernathy-net:
+    driver: bridge
