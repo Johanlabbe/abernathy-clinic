@@ -1,0 +1,79 @@
+{
+  "realm": "abernathy",
+  "enabled": true,
+  "displayName": "Abernathy Clinic",
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "roles": {
+    "realm": [
+      {
+        "name": "praticien",
+        "description": "Médecin : lecture des patients, accès aux notes médicales et à l'évaluation du risque"
+      },
+      {
+        "name": "organisateur",
+        "description": "Personnel administratif : gestion de l'état civil des patients (création / modification)"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "dr.house",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Gregory",
+      "lastName": "House",
+      "email": "dr.house@abernathy.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["praticien"]
+    },
+    {
+      "username": "secretary",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Sarah",
+      "lastName": "Connor",
+      "email": "secretary@abernathy.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["organisateur"]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "abernathy-front",
+      "name": "Abernathy Front-end",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "abernathy-front-secret",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:8082/login/oauth2/code/keycloak",
+        "http://localhost:8082/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8082"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:8082/*"
+      }
+    }
+  ]
+}

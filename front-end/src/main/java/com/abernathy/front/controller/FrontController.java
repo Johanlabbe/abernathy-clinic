@@ -2,7 +2,6 @@ package com.abernathy.front.controller;
 
 import com.abernathy.front.beans.NoteBean;
 import com.abernathy.front.beans.PatientBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestClient;
 
-import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -20,13 +18,14 @@ public class FrontController {
 
     private final RestClient restClient;
 
-    public FrontController(@Value("${services.gateway-url}") String gatewayUrl) {
-        String encodedCredentials = Base64.getEncoder().encodeToString("medecin:password123".getBytes());
+    public FrontController(RestClient gatewayRestClient) {
+        this.restClient = gatewayRestClient;
+    }
 
-        this.restClient = RestClient.builder()
-               .baseUrl(gatewayUrl)
-               .defaultHeader("Authorization", "Basic " + encodedCredentials)
-               .build();
+    // Page d'accueil : on bascule sur la liste des patients (URL de retour après login / logout)
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/patients";
     }
 
     @GetMapping("/patients")

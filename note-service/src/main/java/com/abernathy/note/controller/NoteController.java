@@ -4,10 +4,13 @@ import com.abernathy.note.model.Note;
 import com.abernathy.note.service.NoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Données médicales : accès réservé au praticien
+@PreAuthorize("hasRole('praticien')")
 @RestController
 @RequestMapping("/note")
 public class NoteController {

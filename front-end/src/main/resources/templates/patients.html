@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -34,6 +34,15 @@
 </head>
 
 <body>
+    <div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <span>Connecté en tant que <strong sec:authentication="name">utilisateur</strong></span>
+        <form th:action="@{/logout}" method="post" style="margin: 0;">
+            <button type="submit"
+                style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Déconnexion</button>
+        </form>
+    </div>
+
     <h1>Liste des Patients - Abernathy Clinic</h1>
 
     <a th:href="@{/patient/add}"

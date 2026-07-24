@@ -4,6 +4,14 @@ server:
 spring:
   application:
     name: patient-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Valide le claim "iss" sur l'URL publique de Keycloak
+          issuer-uri: ${ISSUER_URI:http://localhost:8090/realms/abernathy}
+          # Récupère les clés de signature (joignable depuis le conteneur)
+          jwk-set-uri: ${JWK_SET_URI:http://localhost:8090/realms/abernathy/protocol/openid-connect/certs}
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:abernathy_patient}?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
     username: ${DB_USER:root}

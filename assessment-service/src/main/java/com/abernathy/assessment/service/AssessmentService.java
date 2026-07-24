@@ -2,14 +2,12 @@ package com.abernathy.assessment.service;
 
 import com.abernathy.assessment.bean.NoteBean;
 import com.abernathy.assessment.bean.PatientBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -32,12 +30,8 @@ public class AssessmentService {
 
     private final RestClient restClient;
 
-    public AssessmentService(@Value("${services.gateway-url}") String gatewayUrl) {
-        String credentials = Base64.getEncoder().encodeToString("medecin:password123".getBytes());
-        this.restClient = RestClient.builder()
-                .baseUrl(gatewayUrl)
-                .defaultHeader("Authorization", "Basic " + credentials)
-                .build();
+    public AssessmentService(RestClient gatewayRestClient) {
+        this.restClient = gatewayRestClient;
     }
 
     public String assess(Long patId) {

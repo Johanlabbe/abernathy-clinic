@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: assessment-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI:http://localhost:8090/realms/abernathy}
+          jwk-set-uri: ${JWK_SET_URI:http://localhost:8090/realms/abernathy/protocol/openid-connect/certs}
 
 services:
   gateway-url: http://${GATEWAY_HOST:localhost}:${GATEWAY_PORT:8080}

@@ -4,6 +4,29 @@ server:
 spring:
   application:
     name: front-end
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${KC_CLIENT_ID:abernathy-front}
+            client-secret: ${KC_CLIENT_SECRET:abernathy-front-secret}
+            authorization-grant-type: authorization_code
+            scope: openid, profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-name: Keycloak
+        provider:
+          keycloak:
+            # Endpoint front-channel (le navigateur y est redirigé)
+            authorization-uri: ${KC_AUTH_URI:http://localhost:8090/realms/abernathy/protocol/openid-connect/auth}
+            # Endpoints back-channel (appelés par le conteneur front)
+            token-uri: ${KC_TOKEN_URI:http://localhost:8090/realms/abernathy/protocol/openid-connect/token}
+            jwk-set-uri: ${KC_JWKS_URI:http://localhost:8090/realms/abernathy/protocol/openid-connect/certs}
+            user-info-uri: ${KC_USERINFO_URI:http://localhost:8090/realms/abernathy/protocol/openid-connect/userinfo}
+            user-name-attribute: preferred_username
 
 services:
   gateway-url: http://${GATEWAY_HOST:localhost}:${GATEWAY_PORT:8080}
+
+keycloak:
+  logout-uri: ${KC_LOGOUT_URI:http://localhost:8090/realms/abernathy/protocol/openid-connect/logout}
