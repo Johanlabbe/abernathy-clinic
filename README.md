@@ -138,7 +138,7 @@ abernathy-clinic/
 
 ---
 
-## 🌱 Green Code (Étape 6)
+## Green Code
 
 > Cette section constitue le livrable de l'**étape 6** du projet : identifier les **enjeux** du Green Code et lister des **pistes d'amélioration** pour ce projet.
 >
