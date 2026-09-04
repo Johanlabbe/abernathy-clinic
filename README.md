@@ -15,7 +15,7 @@ Projet 9 — parcours *Développeur d'application Java* (OpenClassrooms). Archit
 - [Comptes de test](#comptes-de-test)
 - [Sécurité](#sécurité)
 - [Structure du dépôt](#structure-du-dépôt)
-- [🌱 Green Code (Étape 6)](#-green-code-étape-6)
+- [Green Code (Étape 6)](#-green-code-étape-6)
 
 ---
 
